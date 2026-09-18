@@ -1,6 +1,6 @@
 import pygame as pg
 
-from .constants import WIDTH, HEIGHT, FPS
+from .constants import WIDTH, HEIGHT, FPS, COLOR_SKY
 
 pg.init()
 
@@ -15,7 +15,7 @@ class Game:
         self.running = True
 
     def update(self):
-        self.window.fill((0, 0, 0))
+        self.window.fill(COLOR_SKY)
 
         for e in pg.event.get():
             if e.type == pg.QUIT:

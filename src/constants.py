@@ -2,3 +2,6 @@ WIDTH = 480
 HEIGHT = 720
 
 FPS = 60
+
+
+COLOR_SKY = (89, 219, 255)
