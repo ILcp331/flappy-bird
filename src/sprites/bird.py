@@ -7,7 +7,7 @@ class Bird(pg.sprite.Sprite):
     WIDTH = 32
     HEIGHT = 32
 
-    FLAP_STRENGTH = -12
+    FLAP_STRENGTH = -10
     GRAVITY = 0.75
     TERMINAL_VEL = 24
 
