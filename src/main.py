@@ -10,7 +10,7 @@ pg.init()
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, debug: bool = False):
         self.window = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pg.time.Clock()
         self.sprites = pg.sprite.Group()
@@ -19,6 +19,7 @@ class Game:
 
         self.bird = Bird((WINDOW_WIDTH/4, 0), self.sprites)
 
+        self.debug = debug
         self.running = True
         self.frames = 0
 
@@ -42,15 +43,26 @@ class Game:
             if e.type == pg.QUIT:
                 self.running = False
 
+        # ================
+
         if self.frames % (Pipe.SPAWN_SECS * FPS) == 0:
             self.spawn_pipe_pair()
 
         self.sprites.update()
-
         self.draw_sprites()
+
+        if self.debug:
+            print(f'({self.frames})')
+            print(f'sprites: {len(self.sprites)}')
+            print(f'bird pos{self.bird.pos.xy}')
+            print(f'bird vel{self.bird.vel.xy}')
+            print()
+
+        # ================
 
         pg.display.update()
         self.clock.tick(FPS)
+
         self.frames += 1
 
 

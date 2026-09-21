@@ -11,9 +11,11 @@ class Pipe(pg.sprite.Sprite):
     GAP_SIZE = 128
     GAP_MARGIN_SIZE = 48
 
-    SPAWN_SECS = 2.5
+    COLOR = (48, 170, 32)
+
+    SPAWN_SECS = 2
     INIT_XPOS = WINDOW_WIDTH
-    SPEED = 2
+    SPEED = 2.5
     DIRECTION = -1
 
     def __init__(
@@ -27,7 +29,7 @@ class Pipe(pg.sprite.Sprite):
         self.pos = pg.Vector2(self.INIT_XPOS, ypos)
 
         self.image = pg.Surface((self.WIDTH, height))
-        self.image.fill((48, 161, 48))
+        self.image.fill(self.COLOR)
 
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.pos

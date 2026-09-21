@@ -7,6 +7,8 @@ class Bird(pg.sprite.Sprite):
     WIDTH = 32
     HEIGHT = 32
 
+    COLOR = (255, 240, 189)
+
     FLAP_STRENGTH = -10
     GRAVITY = 0.75
     TERMINAL_VEL = 24
@@ -22,7 +24,7 @@ class Bird(pg.sprite.Sprite):
         self.vel = pg.Vector2(0, 0)
 
         self.image = pg.Surface((self.WIDTH, self.HEIGHT))
-        self.image.fill((0, 0, 0))
+        self.image.fill(self.COLOR)
 
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.pos
@@ -42,8 +44,6 @@ class Bird(pg.sprite.Sprite):
         self.space_key_last_state = keys[pg.K_SPACE]
 
     def move(self):
-        keys = pg.key.get_pressed()
-
         if self.space_key_pressed:
             self.vel.y = self.FLAP_STRENGTH
 
