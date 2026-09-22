@@ -10,7 +10,6 @@ class Bird(pg.sprite.Sprite):
     COLOR = (255, 240, 189)
 
     FLAP_STRENGTH = -10
-    FLAP_COOLDOWN = 2
     GRAVITY = 0.75
     TERMINAL_VEL = 24
 
@@ -32,7 +31,6 @@ class Bird(pg.sprite.Sprite):
 
         self.space_key_pressed = False
         self.space_key_last_state = False
-        self.frames_since_last_flap = 0
 
     def get_input(self):
         keys = pg.key.get_pressed()
@@ -46,11 +44,8 @@ class Bird(pg.sprite.Sprite):
         self.space_key_last_state = keys[pg.K_SPACE]
 
     def move(self):
-        if self.space_key_pressed and self.frames_since_last_flap > self.FLAP_COOLDOWN:
+        if self.space_key_pressed:
             self.vel.y = self.FLAP_STRENGTH
-            self.frames_since_last_flap = 0
-        else:
-            self.frames_since_last_flap += 1
 
         self.vel.y += self.GRAVITY
         self.vel.y = max(min(self.vel.y, self.TERMINAL_VEL), -self.TERMINAL_VEL)
