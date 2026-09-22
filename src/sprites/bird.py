@@ -49,6 +49,10 @@ class Bird(pg.sprite.Sprite):
 
         self.pos += self.vel
 
+        if self.pos.y < 0:
+            self.pos.y = 0
+            self.vel.y = 0
+
     def update(self):
         self.move()
 
