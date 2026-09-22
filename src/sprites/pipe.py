@@ -1,6 +1,6 @@
 import pygame as pg
 
-from ..constants import WINDOW_WIDTH, WINDOW_HEIGHT
+from ..constants import WINDOW_WIDTH
 
 pg.init()
 
