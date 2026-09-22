@@ -25,6 +25,7 @@ class Pipe(pg.sprite.Sprite):
         *groups
     ):
         super().__init__(*groups)
+        self.layer = 1
 
         self.pos = pg.Vector2(self.INIT_XPOS, ypos)
 

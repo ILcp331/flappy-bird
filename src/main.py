@@ -14,12 +14,13 @@ class Game:
     def __init__(self, debug: bool = False):
         self.window = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pg.time.Clock()
-        self.sprites = pg.sprite.Group()
+        self.sprites = pg.sprite.LayeredUpdates()
 
         pg.display.set_caption('Flappy Bird')
 
-        self.bird = Bird((WINDOW_WIDTH/4, 0), self.sprites)
-        self.sprites.add(Ground())
+        self.bird = Bird((WINDOW_WIDTH/4, 0))
+
+        self.sprites.add(self.bird, Ground())
 
         self.debug = debug
         self.running = True

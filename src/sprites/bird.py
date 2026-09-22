@@ -19,6 +19,7 @@ class Bird(pg.sprite.Sprite):
         *groups
     ):
         super().__init__(*groups)
+        self._layer = 2
 
         self.pos = pg.Vector2(pos)
         self.vel = pg.Vector2(0, 0)
