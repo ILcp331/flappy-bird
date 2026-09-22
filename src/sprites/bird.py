@@ -29,22 +29,19 @@ class Bird(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.pos
 
-        self.space_key_pressed = False
-        self.space_key_last_state = False
+        self.current_keys = pg.key.get_pressed()
+        self.last_keys = pg.key.get_pressed()
 
-    def get_input(self):
-        keys = pg.key.get_pressed()
+    def is_pressed(self, key: int) -> bool:
+        self.current_keys = pg.key.get_pressed()
 
-        if keys[pg.K_SPACE]:
-            if self.space_key_last_state:
-                self.space_key_pressed = False
-            else:
-                self.space_key_pressed = True
+        if self.current_keys[key] and not self.last_keys[key]:
+            return True
 
-        self.space_key_last_state = keys[pg.K_SPACE]
+        return False
 
     def move(self):
-        if self.space_key_pressed:
+        if self.is_pressed(pg.K_SPACE):
             self.vel.y = self.FLAP_STRENGTH
 
         self.vel.y += self.GRAVITY
@@ -53,7 +50,7 @@ class Bird(pg.sprite.Sprite):
         self.pos += self.vel
 
     def update(self):
-        self.get_input()
         self.move()
 
+        self.last_keys = self.current_keys
         self.rect.x, self.rect.y = self.pos
