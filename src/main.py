@@ -54,10 +54,10 @@ class Game:
         self.draw_sprites()
 
         if self.debug:
-            print(f'({self.frames})')
+            print(f'({self.frames} | {self.clock.get_fps():.2f})')
             print(f'sprites: {len(self.sprites)}')
-            print(f'bird pos{self.bird.pos.xy}')
-            print(f'bird vel{self.bird.vel.xy}')
+            print(f'bird pos {self.bird.pos.xy}')
+            print(f'bird vel {self.bird.vel.xy}')
             print()
 
         # ================
