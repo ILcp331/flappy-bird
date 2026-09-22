@@ -5,6 +5,7 @@ import pygame as pg
 from .constants import WINDOW_WIDTH, WINDOW_HEIGHT, FPS, COLOR_SKY
 from .sprites.bird import Bird
 from .sprites.pipe import Pipe
+from .sprites.ground import Ground
 
 pg.init()
 
@@ -18,6 +19,7 @@ class Game:
         pg.display.set_caption('Flappy Bird')
 
         self.bird = Bird((WINDOW_WIDTH/4, 0), self.sprites)
+        self.sprites.add(Ground())
 
         self.debug = debug
         self.running = True
