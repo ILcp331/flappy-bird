@@ -15,12 +15,12 @@ class Game:
         self.window = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pg.time.Clock()
         self.sprites = pg.sprite.LayeredUpdates()
+        self.danger = pg.sprite.Group()
 
         pg.display.set_caption('Flappy Bird')
 
-        self.bird = Bird((WINDOW_WIDTH/4, 0))
-
-        self.sprites.add(self.bird, Ground())
+        self.bird = Bird((WINDOW_WIDTH/4, 0), self.sprites)
+        Ground(self.sprites, self.danger)
 
         self.debug = debug
         self.running = True
@@ -35,6 +35,7 @@ class Game:
                            WINDOW_HEIGHT - (gap_y + Pipe.GAP_SIZE))
 
         self.sprites.add(top_pipe, bottom_pipe)
+        self.danger.add(top_pipe, bottom_pipe)
 
     def draw_sprites(self):
         self.sprites.draw(self.window)
