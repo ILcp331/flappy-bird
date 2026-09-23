@@ -15,16 +15,19 @@ class Bird(pg.sprite.Sprite):
     GRAVITY = 0.75
     TERMINAL_VEL = 24
 
+    INIT_X = 128
+    INIT_Y = 256
+    INIT_Y_VEL = -10
+
     def __init__(
         self,
-        pos: tuple[float, float],
         *groups
     ):
         self._layer = 2
         super().__init__(*groups)
 
-        self.pos = pg.Vector2(pos)
-        self.vel = pg.Vector2(0, 0)
+        self.pos = pg.Vector2(self.INIT_X, self.INIT_Y)
+        self.vel = pg.Vector2(0, self.INIT_Y_VEL)
         self.is_game_over = False
 
         self.image = pg.Surface((self.WIDTH, self.HEIGHT))

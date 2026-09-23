@@ -19,7 +19,7 @@ class Game:
 
         pg.display.set_caption('Flappy Bird')
 
-        self.bird = Bird((WINDOW_WIDTH/4, 0), self.sprites)
+        self.bird = Bird(self.sprites)
         Ground(self.sprites, self.danger)
 
         self.debug = debug
@@ -51,7 +51,7 @@ class Game:
         self.sprites.empty()
         self.danger.empty()
 
-        self.bird = Bird((WINDOW_WIDTH/4, 0), self.sprites)
+        self.bird = Bird(self.sprites)
         Ground(self.sprites, self.danger)
 
     def collisions(self):
