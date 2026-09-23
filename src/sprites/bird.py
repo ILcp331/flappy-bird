@@ -8,6 +8,7 @@ class Bird(pg.sprite.Sprite):
     HEIGHT = 32
 
     COLOR = (255, 240, 189)
+    COLOR_DEAD = (255, 89, 89)
 
     FLAP_STRENGTH = -10
     GRAVITY = 0.75
@@ -23,6 +24,7 @@ class Bird(pg.sprite.Sprite):
 
         self.pos = pg.Vector2(pos)
         self.vel = pg.Vector2(0, 0)
+        self.is_game_over = False
 
         self.image = pg.Surface((self.WIDTH, self.HEIGHT))
         self.image.fill(self.COLOR)
@@ -41,6 +43,9 @@ class Bird(pg.sprite.Sprite):
 
         return False
 
+    def die(self):
+        self.image.fill(self.COLOR_DEAD)
+
     def move(self):
         if self.is_pressed(pg.K_SPACE):
             self.vel.y = self.FLAP_STRENGTH
@@ -55,7 +60,11 @@ class Bird(pg.sprite.Sprite):
             self.vel.y = 0
 
     def update(self):
-        self.move()
+        if self.is_game_over:
+            self.image.fill(self.COLOR_DEAD)
+        else:
+            self.image.fill(self.COLOR)
+            self.move()
 
         self.last_keys = self.current_keys
         self.rect.x, self.rect.y = self.pos

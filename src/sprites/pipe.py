@@ -28,6 +28,7 @@ class Pipe(pg.sprite.Sprite):
         self.layer = 1
 
         self.pos = pg.Vector2(self.INIT_XPOS, ypos)
+        self.is_game_over = False
 
         self.image = pg.Surface((self.WIDTH, height))
         self.image.fill(self.COLOR)
@@ -49,7 +50,8 @@ class Pipe(pg.sprite.Sprite):
             return
 
     def update(self):
-        self.move()
-        self.check_despawn()
+        if not self.is_game_over:
+            self.move()
+            self.check_despawn()
 
         self.rect.x, self.rect.y = self.pos

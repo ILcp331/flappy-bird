@@ -5,4 +5,4 @@ if __name__ == "__main__":
     game = Game(debug=True)
 
     while game.running:
-        game.update()
+        game.mainloop()

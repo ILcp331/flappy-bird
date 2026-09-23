@@ -24,6 +24,7 @@ class Game:
 
         self.debug = debug
         self.running = True
+        self.is_game_over = False
         self.frames = 0
 
     def spawn_pipe_pair(self):
@@ -37,22 +38,25 @@ class Game:
         self.sprites.add(top_pipe, bottom_pipe)
         self.danger.add(top_pipe, bottom_pipe)
 
+    def game_over(self):
+        self.bird.die()
+
+        for sprite in self.sprites:
+            sprite.is_game_over = True
+
+    def collisions(self):
+        if pg.sprite.spritecollide(self.bird, self.danger, dokill=False):
+            self.game_over()
+
     def draw_sprites(self):
         self.sprites.draw(self.window)
 
     def update(self):
-        self.window.fill(COLOR_SKY)
-
-        for e in pg.event.get():
-            if e.type == pg.QUIT:
-                self.running = False
-
-        # ================
-
         if self.frames % (Pipe.SPAWN_SECS * FPS) == 0:
             self.spawn_pipe_pair()
 
         self.sprites.update()
+        self.collisions()
         self.draw_sprites()
 
         if self.debug:
@@ -62,16 +66,16 @@ class Game:
             print(f'bird vel {self.bird.vel.xy}')
             print()
 
-        # ================
+    def mainloop(self):
+        self.window.fill(COLOR_SKY)
+
+        for e in pg.event.get():
+            if e.type == pg.QUIT:
+                self.running = False
+
+        self.update()
 
         pg.display.update()
         self.clock.tick(FPS)
 
         self.frames += 1
-
-
-if __name__ == '__main__':
-    game = Game()
-
-    while game.running:
-        game.update()

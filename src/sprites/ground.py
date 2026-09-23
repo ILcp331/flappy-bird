@@ -18,6 +18,7 @@ class Ground(pg.sprite.Sprite):
         self._layer = 0
 
         self.pos = pg.Vector2(0, WINDOW_HEIGHT - self.HEIGHT)
+        self.is_game_over = False
 
         self.image = pg.Surface((WINDOW_WIDTH, self.HEIGHT))
         self.image.fill(self.COLOR)
@@ -26,4 +27,5 @@ class Ground(pg.sprite.Sprite):
         self.rect.x, self.rect.y = self.pos
 
     def update(self):
-        pass
+        if not self.is_game_over:
+            pass
