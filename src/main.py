@@ -39,10 +39,20 @@ class Game:
         self.danger.add(top_pipe, bottom_pipe)
 
     def game_over(self):
-        self.bird.die()
+        self.is_game_over = True
 
+        self.bird.die()
         for sprite in self.sprites:
             sprite.is_game_over = True
+
+    def reset(self):
+        self.is_game_over = False
+
+        self.sprites.empty()
+        self.danger.empty()
+
+        self.bird = Bird((WINDOW_WIDTH/4, 0), self.sprites)
+        Ground(self.sprites, self.danger)
 
     def collisions(self):
         if pg.sprite.spritecollide(self.bird, self.danger, dokill=False):
@@ -52,6 +62,10 @@ class Game:
         self.sprites.draw(self.window)
 
     def update(self):
+        if self.is_game_over:
+            if self.bird.is_pressed(self.bird.FLAP_KEY):
+                self.reset()
+
         if self.frames % (Pipe.SPAWN_SECS * FPS) == 0:
             self.spawn_pipe_pair()
 
@@ -61,6 +75,7 @@ class Game:
 
         if self.debug:
             print(f'({self.frames} | {self.clock.get_fps():.2f})')
+            print(f'game over? {self.is_game_over}')
             print(f'sprites: {len(self.sprites)}')
             print(f'bird pos {self.bird.pos.xy}')
             print(f'bird vel {self.bird.vel.xy}')

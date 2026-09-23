@@ -10,6 +10,7 @@ class Bird(pg.sprite.Sprite):
     COLOR = (255, 240, 189)
     COLOR_DEAD = (255, 89, 89)
 
+    FLAP_KEY = pg.K_SPACE
     FLAP_STRENGTH = -10
     GRAVITY = 0.75
     TERMINAL_VEL = 24
@@ -47,7 +48,7 @@ class Bird(pg.sprite.Sprite):
         self.image.fill(self.COLOR_DEAD)
 
     def move(self):
-        if self.is_pressed(pg.K_SPACE):
+        if self.is_pressed(self.FLAP_KEY):
             self.vel.y = self.FLAP_STRENGTH
 
         self.vel.y += self.GRAVITY
