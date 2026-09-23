@@ -19,8 +19,8 @@ class Bird(pg.sprite.Sprite):
         pos: tuple[float, float],
         *groups
     ):
-        super().__init__(*groups)
         self._layer = 2
+        super().__init__(*groups)
 
         self.pos = pg.Vector2(pos)
         self.vel = pg.Vector2(0, 0)

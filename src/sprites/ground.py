@@ -14,8 +14,8 @@ class Ground(pg.sprite.Sprite):
         self,
         *groups
     ):
-        super().__init__(*groups)
         self._layer = 0
+        super().__init__(*groups)
 
         self.pos = pg.Vector2(0, WINDOW_HEIGHT - self.HEIGHT)
         self.is_game_over = False
