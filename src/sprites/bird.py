@@ -7,8 +7,9 @@ class Bird(pg.sprite.Sprite):
     WIDTH = 32
     HEIGHT = 32
 
-    COLOR = (255, 240, 189)
+    COLOR_DEFAULT = (255, 240, 189)
     COLOR_DEAD = (255, 89, 89)
+    COLOR_READY = (255, 143, 143)
 
     FLAP_KEY = pg.K_SPACE
     FLAP_STRENGTH = -10
@@ -31,7 +32,7 @@ class Bird(pg.sprite.Sprite):
         self.is_game_over = False
 
         self.image = pg.Surface((self.WIDTH, self.HEIGHT))
-        self.image.fill(self.COLOR)
+        self.image.fill(self.COLOR_DEFAULT)
 
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.pos
@@ -67,7 +68,7 @@ class Bird(pg.sprite.Sprite):
         if self.is_game_over:
             self.image.fill(self.COLOR_DEAD)
         else:
-            self.image.fill(self.COLOR)
+            self.image.fill(self.COLOR_DEFAULT)
             self.move()
 
         self.last_keys = self.current_keys
