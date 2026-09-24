@@ -17,7 +17,7 @@ class Game:
     DEBUG_FONT = pg.font.Font('src/fonts/FiraCode-VariableFont_wght.ttf', 16)
     DEBUG_COLOR = (0, 0, 0)
 
-    def __init__(self, debug: bool = False):
+    def __init__(self, allow_debug: bool = False):
         self.window = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pg.time.Clock()
         self.sprites = pg.sprite.LayeredUpdates()
@@ -28,23 +28,15 @@ class Game:
         self.bird = Bird(self.sprites)
         Ground(self.sprites, self.danger)
 
-        self.debug = debug
+        self.debug = False
+        self.allow_debug = allow_debug
         self.running = True
         self.frames = 0
 
         self.is_game_over = False
         self.game_over_timer = 0
 
-        self.debug_lines = [
-            f'({self.frames} | {self.clock.get_fps():.2f} FPS)',
-            f'game over? {self.is_game_over}',
-            f'can restart? '
-            f'{self.game_over_timer >= self.GAME_OVER_RESTART_COOLDOWN}, '
-            f'{self.game_over_timer}/{self.GAME_OVER_RESTART_COOLDOWN}',
-            f'sprites: {len(self.sprites)}',
-            f'bird pos {self.bird.pos.xy}',
-            f'bird vel {self.bird.vel.xy}',
-        ]
+        self.debug_lines = []
 
     def spawn_pipe_pair(self):
         gap_y = random.randint(0 + Pipe.GAP_MARGIN_SIZE,
@@ -103,7 +95,7 @@ class Game:
 
     def update_debug_lines(self):
         self.debug_lines = [
-            f'({self.frames} | {self.clock.get_fps():.2f} FPS)',
+            f'frame {self.frames} (fps: {self.clock.get_fps():.2f})',
             f'sprites: {len(self.sprites)}',
             f'bird pos {self.bird.pos.xy}',
             f'bird vel {self.bird.vel.xy}',
@@ -123,6 +115,11 @@ class Game:
         for e in pg.event.get():
             if e.type == pg.QUIT:
                 self.running = False
+
+            if e.type == pg.KEYDOWN:
+                if e.key == pg.K_0:
+                    if self.allow_debug:
+                        self.debug = not self.debug
 
         if self.is_game_over:
             self.update_game_over()
