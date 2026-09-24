@@ -6,12 +6,16 @@ from .constants import WINDOW_WIDTH, WINDOW_HEIGHT, FPS, COLOR_SKY
 from .sprites.bird import Bird
 from .sprites.pipe import Pipe
 from .sprites.ground import Ground
+from .utils.text import draw_lines
 
 pg.init()
 
 
 class Game:
     GAME_OVER_RESTART_COOLDOWN = 45
+
+    DEBUG_FONT = pg.font.Font('src/fonts/FiraCode-VariableFont_wght.ttf', 16)
+    DEBUG_COLOR = (0, 0, 0)
 
     def __init__(self, debug: bool = False):
         self.window = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -30,6 +34,17 @@ class Game:
 
         self.is_game_over = False
         self.game_over_timer = 0
+
+        self.debug_lines = [
+            f'({self.frames} | {self.clock.get_fps():.2f} FPS)',
+            f'game over? {self.is_game_over}',
+            f'can restart? '
+            f'{self.game_over_timer >= self.GAME_OVER_RESTART_COOLDOWN}, '
+            f'{self.game_over_timer}/{self.GAME_OVER_RESTART_COOLDOWN}',
+            f'sprites: {len(self.sprites)}',
+            f'bird pos {self.bird.pos.xy}',
+            f'bird vel {self.bird.vel.xy}',
+        ]
 
     def spawn_pipe_pair(self):
         gap_y = random.randint(0 + Pipe.GAP_MARGIN_SIZE,
@@ -86,6 +101,22 @@ class Game:
         self.collisions()
         self.draw_sprites()
 
+    def update_debug_lines(self):
+        self.debug_lines = [
+            f'({self.frames} | {self.clock.get_fps():.2f} FPS)',
+            f'sprites: {len(self.sprites)}',
+            f'bird pos {self.bird.pos.xy}',
+            f'bird vel {self.bird.vel.xy}',
+            f'game over? {self.is_game_over}',
+        ]
+
+        if self.is_game_over:
+            can_restart = self.game_over_timer >= self.GAME_OVER_RESTART_COOLDOWN
+            self.debug_lines.append(
+                f'can restart? {can_restart}, '
+                f'{self.game_over_timer}/{self.GAME_OVER_RESTART_COOLDOWN}',
+            )
+
     def mainloop(self):
         self.window.fill(COLOR_SKY)
 
@@ -95,19 +126,21 @@ class Game:
 
         if self.is_game_over:
             self.update_game_over()
+
         else:
             self.update()
 
         if self.debug:
-            print(f'({self.frames} | {self.clock.get_fps():.2f} FPS)')
-            print(f'game over? {self.is_game_over}')
-            print(f'can restart? '
-                  f'{self.game_over_timer >= self.GAME_OVER_RESTART_COOLDOWN}, '
-                  f'{self.game_over_timer}/{self.GAME_OVER_RESTART_COOLDOWN}')
-            print(f'sprites: {len(self.sprites)}')
-            print(f'bird pos {self.bird.pos.xy}')
-            print(f'bird vel {self.bird.vel.xy}')
-            print()
+            self.update_debug_lines()
+
+            draw_lines(
+                self.window,
+                (8, 8),
+                self.DEBUG_FONT,
+                self.debug_lines,
+                self.DEBUG_COLOR,
+                alignment='left'
+            )
 
         pg.display.update()
         self.clock.tick(FPS)
