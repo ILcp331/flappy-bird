@@ -24,7 +24,7 @@ class Pipe(pg.sprite.Sprite):
         height: float,
         *groups
     ):
-        self._layer = 1
+        self._layer = 0
         super().__init__(*groups)
 
         self.pos = pg.Vector2(self.INIT_XPOS, ypos)
