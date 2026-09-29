@@ -64,6 +64,8 @@ class Bird(pg.sprite.Sprite):
             self.pos.y = 0
             self.vel.y = 0
 
+        self.rect.x, self.rect.y = self.pos
+
     def update(self):
         if self.is_game_over:
             self.image.fill(self.COLOR_DEAD)
@@ -72,4 +74,3 @@ class Bird(pg.sprite.Sprite):
             self.move()
 
         self.last_keys = self.current_keys
-        self.rect.x, self.rect.y = self.pos

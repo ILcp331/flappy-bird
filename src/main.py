@@ -28,7 +28,7 @@ class Game:
         self.bird = Bird(self.sprites)
         Ground(self.sprites, self.danger)
 
-        self.debug = False
+        self.debug_active = False
         self.allow_debug = allow_debug
         self.running = True
         self.frames = 0
@@ -74,6 +74,8 @@ class Game:
         self.sprites.draw(self.window)
 
     def update_game_over(self):
+        self.sprites.update()
+
         if self.game_over_timer >= self.GAME_OVER_RESTART_COOLDOWN:
             self.bird.image.fill(self.bird.COLOR_READY)
 
@@ -109,6 +111,18 @@ class Game:
                 f'{self.game_over_timer}/{self.GAME_OVER_RESTART_COOLDOWN}',
             )
 
+    def debug(self):
+        self.update_debug_lines()
+
+        draw_lines(
+            self.window,
+            (8, 8),
+            self.DEBUG_FONT,
+            self.debug_lines,
+            self.DEBUG_COLOR,
+            alignment='left'
+        )
+
     def mainloop(self):
         self.window.fill(COLOR_SKY)
 
@@ -119,7 +133,7 @@ class Game:
             if e.type == pg.KEYDOWN:
                 if e.key == pg.K_0:
                     if self.allow_debug:
-                        self.debug = not self.debug
+                        self.debug_active = not self.debug_active
 
         if self.is_game_over:
             self.update_game_over()
@@ -127,17 +141,8 @@ class Game:
         else:
             self.update()
 
-        if self.debug:
-            self.update_debug_lines()
-
-            draw_lines(
-                self.window,
-                (8, 8),
-                self.DEBUG_FONT,
-                self.debug_lines,
-                self.DEBUG_COLOR,
-                alignment='left'
-            )
+        if self.debug_active:
+            self.debug()
 
         pg.display.update()
         self.clock.tick(FPS)
