@@ -21,31 +21,34 @@ class Game:
     def __init__(self, allow_debug: bool = False):
         self.window = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pg.time.Clock()
+
+        pg.display.set_caption('Flappy Bird')
+
+        # Sprite containers
         self.sprites = pg.sprite.LayeredUpdates()
         self.danger = pg.sprite.Group()
         self.ui_elems = pg.sprite.Group()
 
-        pg.display.set_caption('Flappy Bird')
-
-        # Sprites
+        # Sprites Init
         self.bird = Bird(self.sprites)
         Ground(self.sprites, self.danger)
 
-        # UI
+        # UI Init
         self.score_disp = ScoreDisplay(self.ui_elems)
         self.score_disp.bounce()
 
-        self.debug_active = False
-        self.allow_debug = allow_debug
+        # Game Properties
         self.running = True
         self.frames = 0
 
         self.is_game_over = False
         self.game_over_timer = 0
 
+        self.allow_debug = allow_debug
+        self.debug_active = False
         self.debug_lines = []
 
-    def spawn_pipe_pair(self):
+    def spawn_pipe_pair(self) -> None:
         gap_y = random.randint(0 + Pipe.GAP_MARGIN_SIZE,
                                WINDOW_HEIGHT - Pipe.GAP_SIZE - Pipe.GAP_MARGIN_SIZE)
 
@@ -56,14 +59,13 @@ class Game:
         self.sprites.add(top_pipe, bottom_pipe)
         self.danger.add(top_pipe, bottom_pipe)
 
-    def game_over(self):
+    def game_over(self) -> None:
         self.is_game_over = True
 
-        self.bird.die()
         for sprite in self.sprites:
             sprite.is_game_over = True
 
-    def reset(self):
+    def reset(self) -> None:
         self.is_game_over = False
         self.game_over_timer = 0
 
@@ -76,15 +78,15 @@ class Game:
         self.score_disp.value = 0
         self.score_disp.bounce()
 
-    def collisions(self):
+    def collisions(self) -> None:
         if pg.sprite.spritecollide(self.bird, self.danger, dokill=False):
             self.game_over()
 
-    def draw_sprites(self):
+    def draw_sprites(self) -> None:
         self.sprites.draw(self.window)
         self.ui_elems.draw(self.window)
 
-    def update_game_over(self):
+    def update_game_over(self) -> None:
         self.sprites.update()
         self.ui_elems.update()
 
@@ -100,7 +102,7 @@ class Game:
 
         self.game_over_timer += 1
 
-    def update(self):
+    def update(self) -> None:
         if self.frames % (Pipe.SPAWN_SECS * FPS) == 0:
             self.spawn_pipe_pair()
 
@@ -109,7 +111,7 @@ class Game:
         self.collisions()
         self.draw_sprites()
 
-    def update_debug_lines(self):
+    def update_debug_lines(self) -> None:
         self.debug_lines = [
             f'frame {self.frames} (fps: {self.clock.get_fps():.2f})',
             f'sprites: {len(self.sprites)}',
@@ -125,7 +127,7 @@ class Game:
                 f'{self.game_over_timer}/{self.GAME_OVER_RESTART_COOLDOWN}',
             )
 
-    def debug(self):
+    def debug(self) -> None:
         self.update_debug_lines()
 
         draw_lines(
@@ -137,7 +139,7 @@ class Game:
             alignment='left'
         )
 
-    def mainloop(self):
+    def mainloop(self) -> None:
         self.window.fill(COLOR_SKY)
 
         for e in pg.event.get():

@@ -48,10 +48,7 @@ class Bird(pg.sprite.Sprite):
 
         return False
 
-    def die(self):
-        self.image.fill(self.COLOR_DEAD)
-
-    def move(self):
+    def move(self) -> None:
         if self.is_pressed(self.FLAP_KEY):
             self.vel.y = self.FLAP_STRENGTH
 
@@ -66,7 +63,7 @@ class Bird(pg.sprite.Sprite):
 
         self.rect.x, self.rect.y = self.pos
 
-    def update(self):
+    def update(self) -> None:
         if self.is_game_over:
             self.image.fill(self.COLOR_DEAD)
         else:

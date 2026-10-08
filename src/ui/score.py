@@ -28,17 +28,17 @@ class ScoreDisplay(pg.sprite.Sprite):
         self.image = font.render(str(self.value), True, self.COLOR)
         self.pos = self.center_pos()
 
-    def bounce(self):
+    def bounce(self) -> None:
         self.size = self.BOUNCE_SIZE
 
-    def render_text(self):
+    def render_text(self) -> None:
         self.size -= (self.size - self.IDLE_SIZE) * self.BOUNCE_EASE_COEF
         self.size = round(self.size)
 
         font = pg.font.Font(PATH_FONT_SCORE, self.size)
         self.image = font.render(str(self.value), True, self.COLOR)
 
-    def center_pos(self):
+    def center_pos(self) -> tuple[float, float]:
         return (
             self.CENTER_X - self.image.get_width() / 2,
             self.CENTER_Y - self.image.get_height() / 2

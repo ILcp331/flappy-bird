@@ -26,6 +26,5 @@ class Ground(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.pos
 
-    def update(self):
-        if not self.is_game_over:
-            pass
+    def update(self) -> None:
+        pass

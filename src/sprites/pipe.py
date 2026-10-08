@@ -36,10 +36,10 @@ class Pipe(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.pos
 
-    def move(self):
+    def move(self) -> None:
         self.pos.x += self.DIRECTION * self.SPEED
 
-    def check_despawn(self):
+    def check_despawn(self) -> None:
         if self.DIRECTION > 0:
             if self.pos.x > WINDOW_WIDTH:
                 self.kill()
@@ -49,7 +49,7 @@ class Pipe(pg.sprite.Sprite):
             self.kill()
             return
 
-    def update(self):
+    def update(self) -> None:
         if not self.is_game_over:
             self.move()
             self.check_despawn()
