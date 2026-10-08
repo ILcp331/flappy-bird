@@ -2,10 +2,11 @@ import random
 
 import pygame as pg
 
-from .constants import WINDOW_WIDTH, WINDOW_HEIGHT, FPS, COLOR_SKY
+from .constants import WINDOW_WIDTH, WINDOW_HEIGHT, FPS, COLOR_SKY, PATH_FONT_DEBUG
 from .sprites.bird import Bird
 from .sprites.pipe import Pipe
 from .sprites.ground import Ground
+from .ui.score import ScoreDisplay
 from .utils.text import draw_lines
 
 pg.init()
@@ -14,7 +15,7 @@ pg.init()
 class Game:
     GAME_OVER_RESTART_COOLDOWN = 45
 
-    DEBUG_FONT = pg.font.Font('src/fonts/FiraCode-VariableFont_wght.ttf', 16)
+    DEBUG_FONT = pg.font.Font(PATH_FONT_DEBUG, 16)
     DEBUG_COLOR = (0, 0, 0)
 
     def __init__(self, allow_debug: bool = False):
@@ -22,11 +23,16 @@ class Game:
         self.clock = pg.time.Clock()
         self.sprites = pg.sprite.LayeredUpdates()
         self.danger = pg.sprite.Group()
+        self.ui_elems = pg.sprite.Group()
 
         pg.display.set_caption('Flappy Bird')
 
+        # Sprites
         self.bird = Bird(self.sprites)
         Ground(self.sprites, self.danger)
+
+        # UI
+        self.score_disp = ScoreDisplay(0, self.ui_elems)
 
         self.debug_active = False
         self.allow_debug = allow_debug
@@ -72,9 +78,11 @@ class Game:
 
     def draw_sprites(self):
         self.sprites.draw(self.window)
+        self.ui_elems.draw(self.window)
 
     def update_game_over(self):
         self.sprites.update()
+        self.ui_elems.update()
 
         if self.game_over_timer >= self.GAME_OVER_RESTART_COOLDOWN:
             self.bird.image.fill(self.bird.COLOR_READY)
@@ -92,6 +100,7 @@ class Game:
             self.spawn_pipe_pair()
 
         self.sprites.update()
+        self.ui_elems.update()
         self.collisions()
         self.draw_sprites()
 
@@ -134,6 +143,10 @@ class Game:
                 if e.key == pg.K_0:
                     if self.allow_debug:
                         self.debug_active = not self.debug_active
+
+                if e.key == pg.K_EQUALS:
+                    if self.debug_active:
+                        self.score_disp.increment()
 
         if self.is_game_over:
             self.update_game_over()
