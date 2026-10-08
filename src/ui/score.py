@@ -17,24 +17,18 @@ class ScoreDisplay(pg.sprite.Sprite):
 
     def __init__(
         self,
-        score_init: int = 0,
         *groups
     ):
         super().__init__(*groups)
 
-        self.value = score_init
+        self.value = 0
         self.size = self.IDLE_SIZE
 
         font = pg.font.Font(PATH_FONT_SCORE, self.size)
         self.image = font.render(str(self.value), True, self.COLOR)
         self.pos = self.center_pos()
 
-    def increment(self):
-        self.value += 1
-        self.size = self.BOUNCE_SIZE
-
-    def reset(self):
-        self.value = 0
+    def bounce(self):
         self.size = self.BOUNCE_SIZE
 
     def render_text(self):

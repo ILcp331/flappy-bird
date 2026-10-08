@@ -32,7 +32,8 @@ class Game:
         Ground(self.sprites, self.danger)
 
         # UI
-        self.score_disp = ScoreDisplay(0, self.ui_elems)
+        self.score_disp = ScoreDisplay(self.ui_elems)
+        self.score_disp.bounce()
 
         self.debug_active = False
         self.allow_debug = allow_debug
@@ -72,6 +73,9 @@ class Game:
         self.bird = Bird(self.sprites)
         Ground(self.sprites, self.danger)
 
+        self.score_disp.value = 0
+        self.score_disp.bounce()
+
     def collisions(self):
         if pg.sprite.spritecollide(self.bird, self.danger, dokill=False):
             self.game_over()
@@ -85,6 +89,7 @@ class Game:
         self.ui_elems.update()
 
         if self.game_over_timer >= self.GAME_OVER_RESTART_COOLDOWN:
+            # Ran after updating bird sprite to override its color
             self.bird.image.fill(self.bird.COLOR_READY)
 
             if self.bird.is_pressed(self.bird.FLAP_KEY):
@@ -146,11 +151,11 @@ class Game:
 
                 if e.key == pg.K_EQUALS:
                     if self.debug_active:
-                        self.score_disp.increment()
+                        self.score_disp.value += 1
+                        self.score_disp.bounce()
 
         if self.is_game_over:
             self.update_game_over()
-
         else:
             self.update()
 
